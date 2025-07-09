@@ -21,6 +21,15 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    // 게시글 삭제
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteBoard(@PathVariable Integer id) {
+        boardService.deleteById(id);
+        return ResponseEntity.ok().body(Map.of(
+                "message", Map.of("type", "success", "text", id + "번 게시물이 삭제 되었습니다.")));
+    }
+
+
     @GetMapping("{id}")
     public BoardDto getBoardById(@PathVariable Integer id) {
         return boardService.getBoardById(id);
@@ -32,9 +41,9 @@ public class BoardController {
         return boardService.list();
     }
 
-
+    // 게시글 추가
     @PostMapping("add")
-    public ResponseEntity<Object> add(@RequestBody BoardDto dto) {
+    public ResponseEntity<?> add(@RequestBody BoardDto dto) {
 
         // 값들이 유효한지 확인
         boolean result = boardService.validate(dto);
