@@ -1,5 +1,8 @@
-package com.example.backend;
+package com.example.backend.board.service;
 
+import com.example.backend.board.dto.BoardDto;
+import com.example.backend.board.entity.Board;
+import com.example.backend.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
