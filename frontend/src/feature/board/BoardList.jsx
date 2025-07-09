@@ -31,27 +31,31 @@ export function BoardList() {
         <h2 className="mb-4">글 목록</h2>
         {boardList.length > 0 ? (
           <Table striped={true} hover={true}>
-            <colgroup>
-              <col style={{ width: "90px" }} />
-              <col style={{}} />
-              <col style={{ width: "200px" }} />
-              <col style={{ width: "200px" }} />
-            </colgroup>
             <thead>
-              <th>
-                <td>#</td>
-                <td>제목</td>
-                <td>작성자</td>
-                <td>작성일시</td>
-              </th>
+              <tr>
+                <th style={{ width: "90px" }}>#</th>
+                <th>제목</th>
+                <th
+                  className="d-none d-md-table-cell"
+                  style={{ width: "200px" }}
+                >
+                  작성자
+                </th>
+                <th
+                  className="d-none d-lg-table-cell"
+                  style={{ width: "200px" }}
+                >
+                  작성일시
+                </th>
+              </tr>
             </thead>
             <tbody>
               {boardList.map((board) => (
                 <tr key={board.id}>
                   <td>{board.id}</td>
                   <td>{board.title}</td>
-                  <td>{board.author}</td>
-                  <td>{board.timesAgo}</td>
+                  <td className="d-none d-md-table-cell">{board.author}</td>
+                  <td className="d-none d-lg-table-cell">{board.timesAgo}</td>
                 </tr>
               ))}
             </tbody>
