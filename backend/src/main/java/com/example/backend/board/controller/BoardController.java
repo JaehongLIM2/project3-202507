@@ -22,6 +22,7 @@ public class BoardController {
     @PostMapping("add")
     @ResponseBody
     public ResponseEntity<Object> add(@RequestBody BoardDto dto) {
+
         // 값들이 유효한지 확인
         boolean result = boardService.validate(dto);
         if (result) {

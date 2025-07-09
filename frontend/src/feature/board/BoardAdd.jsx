@@ -9,16 +9,19 @@ import {
   FormGroup,
   FormLabel,
   Row,
+  Spinner,
 } from "react-bootstrap";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigate = useNavigate();
 
   function handleSaveButtonClick() {
+    setIsProcessing(true);
     axios
       .post("/api/board/add", {
         title: title,
@@ -43,6 +46,7 @@ export function BoardAdd() {
       })
       .finally(() => {
         console.log("항상 실행되는 코드");
+        setIsProcessing(false);
       });
   }
 
@@ -80,7 +84,10 @@ export function BoardAdd() {
           </FormGroup>
         </div>
         <div className="mb-3">
-          <Button onClick={handleSaveButtonClick}>저장</Button>
+          <Button onClick={handleSaveButtonClick} disabled={isProcessing}>
+            {isProcessing && <Spinner />}
+            {isProcessing || "저장"}
+          </Button>
         </div>
       </Col>
     </Row>
