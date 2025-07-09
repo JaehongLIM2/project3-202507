@@ -21,6 +21,22 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    // 게시글 수정
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateBoard(@PathVariable Integer id,
+                                         @RequestBody BoardDto boardDto) {
+        boolean result = boardService.valiate(boardDto);
+        boardService.update(boardDto);
+
+        if (result) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
+        } else {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
+        }
+    }
+
     // 게시글 삭제
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Integer id) {
