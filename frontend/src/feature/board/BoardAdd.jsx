@@ -2,6 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import {
+  Button,
+  Col,
+  FormControl,
+  FormGroup,
+  FormLabel,
+  Row,
+} from "react-bootstrap";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
@@ -39,34 +47,42 @@ export function BoardAdd() {
   }
 
   return (
-    <div>
-      <h3>글 작성</h3>
-      <div>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div>
-        <textarea
-          id=""
-          cols="30"
-          rows="10"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        ></textarea>
-      </div>
-      <div>
-        <input
-          type="text"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-      </div>
-      <div>
-        <button onClick={handleSaveButtonClick}>저장</button>
-      </div>
-    </div>
+    <Row className="justify-content-center">
+      <Col xs={12} md={8} lg={6}>
+        <h3 className="mb-4">글 작성</h3>
+        <div>
+          <FormGroup className="mb-3" controlId="title1">
+            <FormLabel>제목</FormLabel>
+            <FormControl
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            ></FormControl>
+          </FormGroup>
+        </div>
+        <div>
+          <FormGroup className="mb-3" controlId="content1">
+            <FormLabel>본문</FormLabel>
+            <FormControl
+              as="textarea"
+              rows={6}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></FormControl>
+          </FormGroup>
+        </div>
+        <div>
+          <FormGroup className="mb-3" controlId="author1">
+            <FormLabel>작성자</FormLabel>
+            <FormControl
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            ></FormControl>
+          </FormGroup>
+        </div>
+        <div className="mb-3">
+          <Button onClick={handleSaveButtonClick}>저장</Button>
+        </div>
+      </Col>
+    </Row>
   );
 }
