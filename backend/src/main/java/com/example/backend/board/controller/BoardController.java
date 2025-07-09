@@ -25,15 +25,15 @@ public class BoardController {
     @PutMapping("{id}")
     public ResponseEntity<?> updateBoard(@PathVariable Integer id,
                                          @RequestBody BoardDto boardDto) {
-        boolean result = boardService.valiate(boardDto);
-        boardService.update(boardDto);
+        boolean result = boardService.validate(boardDto);
 
         if (result) {
+            boardService.update(boardDto);
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
         } else {
-            return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
+            return ResponseEntity.badRequest().body(Map.of("message",
+                    Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
         }
     }
 
