@@ -31,6 +31,12 @@ export function BoardList() {
         <h2 className="mb-4">글 목록</h2>
         {boardList.length > 0 ? (
           <Table striped={true} hover={true}>
+            <colgroup>
+              <col style={{ width: "90px" }} />
+              <col style={{}} />
+              <col style={{ width: "200px" }} />
+              <col style={{ width: "200px" }} />
+            </colgroup>
             <thead>
               <th>
                 <td>#</td>
@@ -45,7 +51,7 @@ export function BoardList() {
                   <td>{board.id}</td>
                   <td>{board.title}</td>
                   <td>{board.author}</td>
-                  <td>{board.insertedAt}</td>
+                  <td>{board.timesAgo}</td>
                 </tr>
               ))}
             </tbody>

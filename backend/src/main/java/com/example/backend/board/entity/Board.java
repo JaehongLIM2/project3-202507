@@ -22,4 +22,6 @@ public class Board {
 
     @Column(updatable = false, insertable = false)
     private LocalDateTime insertedAt;
+
+
 }
