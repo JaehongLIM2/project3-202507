@@ -50,6 +50,18 @@ export function BoardAdd() {
       });
   }
 
+  // 작성자, 제목, 본문 작성하였는지
+  let validate = true;
+  if (title.trim() === "") {
+    validate = false;
+  }
+  if (content.trim() === "") {
+    validate = false;
+  }
+  if (author.trim() === "") {
+    validate = false;
+  }
+
   return (
     <Row className="justify-content-center">
       <Col xs={12} md={8} lg={6}>
@@ -84,8 +96,11 @@ export function BoardAdd() {
           </FormGroup>
         </div>
         <div className="mb-3">
-          <Button onClick={handleSaveButtonClick} disabled={isProcessing}>
-            {isProcessing && <Spinner />}
+          <Button
+            onClick={handleSaveButtonClick}
+            disabled={isProcessing || !validate}
+          >
+            {isProcessing && <Spinner size="sm" />}
             {isProcessing || "저장"}
           </Button>
         </div>
