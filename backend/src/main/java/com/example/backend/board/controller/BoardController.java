@@ -21,6 +21,11 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    @GetMapping("{id}")
+    public BoardDto getBoardById(@PathVariable Integer id) {
+        return boardService.getBoardById(id);
+    }
+
     @GetMapping("list")
     public List<BoardListInfo> getAllBoards() {
         System.out.println("BoardController.getAllBoards");

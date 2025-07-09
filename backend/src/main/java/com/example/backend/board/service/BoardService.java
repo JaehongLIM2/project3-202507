@@ -48,4 +48,14 @@ public class BoardService {
     }
 
 
+    public BoardDto getBoardById(Integer id) {
+        Board board = boardRepository.findById(id).get();
+        BoardDto boardDto = new BoardDto();
+        boardDto.setId(board.getId());
+        boardDto.setTitle(board.getTitle());
+        boardDto.setContent(board.getContent());
+        boardDto.setAuthor(board.getAuthor());
+        boardDto.setInsertedAt(board.getInsertedAt());
+        return boardDto;
+    }
 }

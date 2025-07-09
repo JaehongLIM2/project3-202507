@@ -1,9 +1,11 @@
 import { Col, Row, Spinner, Table } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 마운트 될 때 (initial render 시) 실행되는 코드
@@ -21,6 +23,12 @@ export function BoardList() {
       });
   }, []);
 
+  function handleTableRowClick(id) {
+    // 게시물 보기로 이동
+    navigate(`/board/${id}`);
+  }
+
+  // 아직 게시물이 없을때, 스피너 돌리기
   if (!boardList) {
     return <Spinner />;
   }
@@ -51,7 +59,11 @@ export function BoardList() {
             </thead>
             <tbody>
               {boardList.map((board) => (
-                <tr key={board.id}>
+                <tr
+                  key={board.id}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleTableRowClick(board.id)}
+                >
                   <td>{board.id}</td>
                   <td>{board.title}</td>
                   <td className="d-none d-md-table-cell">{board.author}</td>
