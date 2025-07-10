@@ -4,6 +4,7 @@ import {
   FormControl,
   FormGroup,
   FormLabel,
+  Modal,
   Row,
   Spinner,
 } from "react-bootstrap";
@@ -13,7 +14,9 @@ import axios from "axios";
 
 export function MemberDetail() {
   const [member, setMember] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
   const [params] = useSearchParams();
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     axios
@@ -31,6 +34,22 @@ export function MemberDetail() {
 
   if (!member) {
     return <Spinner />;
+  }
+
+  function handleDeleteButtonClick() {
+    axios
+      .delete("/api/member", {
+        data: { email: member.email, password: password },
+      })
+      .then((res) => {
+        console.log("good");
+      })
+      .catch((err) => {
+        console.log("bad");
+      })
+      .finally(() => {
+        console.log("always");
+      });
   }
 
   return (
@@ -56,7 +75,12 @@ export function MemberDetail() {
           </FormGroup>
         </div>
         <div>
-          <Button variant="outline-danger" size="sm" className="me-2">
+          <Button
+            onClick={() => setModalShow(true)}
+            variant="outline-danger"
+            size="sm"
+            className="me-2"
+          >
             회원 탈퇴
           </Button>
           <Button variant="outline-info" size="sm">
@@ -64,6 +88,31 @@ export function MemberDetail() {
           </Button>
         </div>
       </Col>
+
+      {/*  탈퇴 확인 모달*/}
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>회원 탈퇴 확인</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <FormGroup controlId="password1">
+            <FormLabel>암호</FormLabel>
+            <FormControl
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-dark" onClick={() => setModalShow(false)}>
+            취소
+          </Button>
+          <Button variant="danger" onClick={handleDeleteButtonClick}>
+            탈퇴
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Row>
   );
 }
