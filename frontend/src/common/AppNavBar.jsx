@@ -18,6 +18,9 @@ export function AppNavBar() {
               <Nav.Link as={NavLink} to="/board/add">
                 새 글
               </Nav.Link>
+              <Nav.Link as={NavLink} to="/signup">
+                회원가입
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
