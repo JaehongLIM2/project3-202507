@@ -94,4 +94,19 @@ public class MemberService {
             throw new RuntimeException("암호가 일치하지 않습니다.");
         }
     }
+
+    public void update(MemberForm memberForm) {
+        // 수정
+        // 1. 조회
+        Member member = memberRepository.findById(memberForm.getEmail()).get();
+        // 1.1 암호 확인
+        if (!member.getPassword().equals(memberForm.getPassword())) {
+            throw new RuntimeException("암호가 일치하지 않습니다.");
+        }
+        // 2. 수정
+        member.setNickName(memberForm.getNickName());
+        member.setInfo(memberForm.getInfo());
+        // 3. 저장
+        memberRepository.save(member);
+    }
 }
