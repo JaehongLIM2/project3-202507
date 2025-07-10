@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import axios from "axios";
 
 export function MemberDetail() {
   const [member, setMember] = useState(null);
