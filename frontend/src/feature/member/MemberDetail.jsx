@@ -87,7 +87,7 @@ export function MemberDetail() {
           <FormGroup controlId="inserted1" className="mb-3">
             <FormLabel>가입일시</FormLabel>
             <FormControl
-              as="datetime-local"
+              type="datetime-local"
               readOnly
               value={member.insertedAt}
             />
