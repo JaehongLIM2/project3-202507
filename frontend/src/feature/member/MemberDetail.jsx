@@ -17,7 +17,7 @@ export function MemberDetail() {
 
   useEffect(() => {
     axios
-      .get(`/api/member>email=${params.get("email")}`)
+      .get(`/api/member?email=${params.get("email")}`)
       .then((res) => {
         setMember(res.data);
       })

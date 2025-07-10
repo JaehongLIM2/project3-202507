@@ -1,5 +1,6 @@
 package com.example.backend.member.controller;
 
+import com.example.backend.member.dto.MemberDto;
 import com.example.backend.member.dto.MemberForm;
 import com.example.backend.member.dto.MemberListInfo;
 import com.example.backend.member.service.MemberService;
@@ -16,6 +17,12 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+
+    // 회원 정보 조회
+    @GetMapping(params = "email")
+    public MemberDto getMember(String email) {
+        return memberService.get(email);
+    }
 
     // 회원 목록 조회
     @GetMapping("list")
