@@ -38,6 +38,7 @@ export function MemberAdd() {
         if (message) {
           toast(message.text, { type: message.type });
         }
+        // 가입 완료시 홈으로 이동
         navigate("/");
       })
       .catch((err) => {
