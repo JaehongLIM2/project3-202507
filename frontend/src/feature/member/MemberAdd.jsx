@@ -5,19 +5,24 @@ import {
   FormGroup,
   FormLabel,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 export function MemberAdd() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickName, setNickName] = useState("");
   const [info, setInfo] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
 
   function handleSaveClick() {
     // post -> /api/member/add, {email, password, nickname, info}
+    setIsProcessing(true);
     axios
       .post("/api/member/add", {
         email: email,
@@ -31,6 +36,7 @@ export function MemberAdd() {
         if (message) {
           toast(message.text, { type: message.type });
         }
+        navigate("/");
       })
       .catch((err) => {
         console.log("안됨");
@@ -41,6 +47,7 @@ export function MemberAdd() {
       })
       .finally(() => {
         console.log("항상");
+        setIsProcessing(false);
       });
   }
 
@@ -99,7 +106,10 @@ export function MemberAdd() {
           </FormGroup>
         </div>
         <div className="mb-3">
-          <Button onClick={handleSaveClick}>저장</Button>
+          <Button onClick={handleSaveClick}>
+            {isProcessing && <Spinner size="sm" />}
+            가입
+          </Button>
         </div>
       </Col>
     </Row>
