@@ -9,14 +9,16 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate, useSearchParams } from "react-router";
 
 export function MemberDetail() {
   const [member, setMember] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [params] = useSearchParams();
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -43,12 +45,19 @@ export function MemberDetail() {
       })
       .then((res) => {
         console.log("good");
+        const message = res.data.message;
+        toast(message.text, { type: message.type });
+        navigate("/");
       })
       .catch((err) => {
         console.log("bad");
+        const message = err.response.data.message;
+        toast(message.text, { type: message.type });
       })
       .finally(() => {
         console.log("always");
+        setModalShow(false);
+        setPassword("");
       });
   }
 
@@ -75,6 +84,16 @@ export function MemberDetail() {
           </FormGroup>
         </div>
         <div>
+          <FormGroup controlId="inserted1" className="mb-3">
+            <FormLabel>가입일시</FormLabel>
+            <FormControl
+              as="datetime-local"
+              readOnly
+              value={member.insertedAt}
+            />
+          </FormGroup>
+        </div>
+        <div>
           <Button
             onClick={() => setModalShow(true)}
             variant="outline-danger"
@@ -83,7 +102,11 @@ export function MemberDetail() {
           >
             회원 탈퇴
           </Button>
-          <Button variant="outline-info" size="sm">
+          <Button
+            onClick={() => navigate(`/member/edit?email=${member.email}`)}
+            variant="outline-info"
+            size="sm"
+          >
             회원 수정
           </Button>
         </div>

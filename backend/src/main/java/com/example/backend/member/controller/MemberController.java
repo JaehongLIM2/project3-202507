@@ -18,6 +18,27 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 회원 탈퇴
+    @DeleteMapping
+    public ResponseEntity<?> deleteMember(@RequestBody MemberForm memberForm) {
+        try {
+            memberService.delete(memberForm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            String message = e.getMessage();
+            // 403 : 권한 없음
+            return ResponseEntity.status(403).body(
+                    Map.of("message",
+                            Map.of("type", "error",
+                                    "text", message)));
+        }
+        return ResponseEntity.ok().body(
+                Map.of("message",
+                        Map.of("type", "success",
+                                "text", "회원 탈퇴 되었습니다.")));
+    }
+
+
     // 회원 정보 조회
     @GetMapping(params = "email")
     public MemberDto getMember(String email) {
