@@ -51,6 +51,18 @@ export function MemberAdd() {
       });
   }
 
+  // 이메일, 암호, 별명 입력하지 않으면 가입 버튼 비활성화
+  let disabled = false;
+  if (email === "") {
+    disabled = true;
+  }
+  if (password === "") {
+    disabled = true;
+  }
+  if (nickName === "") {
+    disabled = true;
+  }
+
   return (
     <Row className="justify-content-center">
       <Col xs={12} md={8} lg={6}>
@@ -106,7 +118,7 @@ export function MemberAdd() {
           </FormGroup>
         </div>
         <div className="mb-3">
-          <Button onClick={handleSaveClick}>
+          <Button onClick={handleSaveClick} disabled={isProcessing || disabled}>
             {isProcessing && <Spinner size="sm" />}
             가입
           </Button>
