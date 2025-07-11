@@ -1,5 +1,6 @@
 package com.example.backend.member.service;
 
+import com.example.backend.member.dto.ChangePasswordForm;
 import com.example.backend.member.dto.MemberDto;
 import com.example.backend.member.dto.MemberForm;
 import com.example.backend.member.dto.MemberListInfo;
@@ -108,5 +109,15 @@ public class MemberService {
         member.setInfo(memberForm.getInfo());
         // 3. 저장
         memberRepository.save(member);
+    }
+
+    public void changePassword(ChangePasswordForm data) {
+        Member db = memberRepository.findById(data.getEmail()).get();
+        if (db.getPassword().equals(data.getOldPassword())) {
+            db.setPassword(data.getNewPassword());
+            memberRepository.save(db);
+        } else {
+            throw new RuntimeException("이전 패스워드가 일치하지 않습니다.");
+        }
     }
 }
