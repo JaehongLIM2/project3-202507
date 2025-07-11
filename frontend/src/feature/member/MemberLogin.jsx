@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export function MemberLogin() {
   const [email, setEmail] = useState("");
@@ -19,14 +20,21 @@ export function MemberLogin() {
     axios
       .post("/api/member/login", { email: email, password: password })
       .then((res) => {
-        console.log("good");
+        const token = res.data.token;
+        localStorage.setItem("token", token);
+        const message = res.data.message;
+        if (message) {
+          toast(message.text, { type: message.type });
+        }
+        navigate("/");
       })
       .catch((err) => {
-        console.log("bad");
+        const message = err.response.data.message;
+        if (message) {
+          toast(message.text, { type: message.type });
+        }
       })
-      .finally(() => {
-        console.log("always");
-      });
+      .finally(() => {});
   }
 
   return (
