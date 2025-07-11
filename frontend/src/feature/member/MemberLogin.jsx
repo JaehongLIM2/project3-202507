@@ -20,16 +20,18 @@ export function MemberLogin() {
   const { login } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  function handleLogInClick() {
+  function handleLogInButtonClick() {
     axios
       .post("/api/member/login", { email: email, password: password })
       .then((res) => {
         const token = res.data.token;
-        localStorage.setItem("token", token);
+        login(token);
+
         const message = res.data.message;
         if (message) {
           toast(message.text, { type: message.type });
         }
+
         navigate("/");
       })
       .catch((err) => {
@@ -60,7 +62,7 @@ export function MemberLogin() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormGroup>
-        <Button onClick={handleLogInClick}>로그인</Button>
+        <Button onClick={handleLogInButtonClick}>로그인</Button>
       </Col>
     </Row>
   );

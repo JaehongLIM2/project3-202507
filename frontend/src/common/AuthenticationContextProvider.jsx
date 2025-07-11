@@ -2,8 +2,30 @@ import { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-// step 1. create context
-export const AuthenticationContext = createContext(null);
+// 유효기간을 넘긴 토큰 삭제
+const token = localStorage.getItem("token");
+if (token) {
+  const decoded = jwtDecode(token);
+  const exp = decoded.exp;
+  if (exp * 1000 < Date.now()) {
+    localStorage.removeItem("token");
+  }
+}
+
+// axios interceptor
+// token 이 있으면 Authorization 헤서에 'Bearer token' 붙이기
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+// step1. create context
+const AuthenticationContext = createContext(null);
 
 export function AuthenticationContextProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -17,7 +39,7 @@ export function AuthenticationContextProvider({ children }) {
         // nickName
         setUser({
           email: res.data.email,
-          nickName: res.data.nickName
+          nickName: res.data.nickName,
         });
       });
     }
@@ -32,22 +54,26 @@ export function AuthenticationContextProvider({ children }) {
       // nickName
       setUser({
         email: res.data.email,
-        nickName: res.data.nickName
+        nickName: res.data.nickName,
       });
     });
   }
+
+  // logout
+  function logout() {
+    localStorage.removeItem("token");
+    setUser(null);
+  }
+
+  // hasAccess
+  // isAdmin
+
+  // step3. provide context
+  return (
+    <AuthenticationContext value={{ user: user, login: login, logout: logout }}>
+      {children}
+    </AuthenticationContext>
+  );
 }
 
-// logout
-function logout() {
-  localStorage.removeItem("token");
-  setUser(null);
-}
-
-// hasAccess
-
-// isAdmin
-
-// step 3. provide context
-return <AuthenticationContext value={{ user: user, login: login, logout: logout }}>{children}</AuthenticationContext>;
-}
+export { AuthenticationContext };
