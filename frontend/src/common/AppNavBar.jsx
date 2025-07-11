@@ -24,6 +24,9 @@ export function AppNavBar() {
               <Nav.Link as={NavLink} to="/member/list">
                 회원목록
               </Nav.Link>
+              <Nav.Link as={NavLink} to="/login">
+                로그인
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,9 +1,6 @@
 package com.example.backend.member.controller;
 
-import com.example.backend.member.dto.ChangePasswordForm;
-import com.example.backend.member.dto.MemberDto;
-import com.example.backend.member.dto.MemberForm;
-import com.example.backend.member.dto.MemberListInfo;
+import com.example.backend.member.dto.*;
 import com.example.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +15,30 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+
+    // 로그인
+    @PostMapping("login")
+    public ResponseEntity<?> login(@RequestBody MemberLoginForm loginForm) {
+//        System.out.println(loginForm);
+        try {
+            String token = memberService.getToken(loginForm);
+            return ResponseEntity.ok().body(
+                    Map.of("token", token,
+                            "message",
+                            Map.of("type", "success",
+                                    "text", "로그인 되었습니다.")));
+        } catch (Exception e) {
+            e.printStackTrace();
+            String message = e.getMessage();
+            // 403 : 권한 없음
+            return ResponseEntity.status(403).body(
+                    Map.of("message",
+                            Map.of("type", "error",
+                                    "text", message)));
+        }
+
+    }
+
 
     // 비밀번호 수정
     @PutMapping("changePassword")
