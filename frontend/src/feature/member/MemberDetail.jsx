@@ -21,7 +21,7 @@ export function MemberDetail() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { logout } = useContext(AuthenticationContext);
+  const { logout, hasAccess } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios
@@ -97,23 +97,25 @@ export function MemberDetail() {
             />
           </FormGroup>
         </div>
-        <div>
-          <Button
-            onClick={() => setModalShow(true)}
-            variant="outline-danger"
-            size="sm"
-            className="me-2"
-          >
-            회원 탈퇴
-          </Button>
-          <Button
-            onClick={() => navigate(`/member/edit?email=${member.email}`)}
-            variant="outline-info"
-            size="sm"
-          >
-            회원 수정
-          </Button>
-        </div>
+        {hasAccess(member.email) && (
+          <div>
+            <Button
+              onClick={() => setModalShow(true)}
+              variant="outline-danger"
+              size="sm"
+              className="me-2"
+            >
+              회원 탈퇴
+            </Button>
+            <Button
+              onClick={() => navigate(`/member/edit?email=${member.email}`)}
+              variant="outline-info"
+              size="sm"
+            >
+              회원 수정
+            </Button>
+          </div>
+        )}
       </Col>
 
       {/*  탈퇴 확인 모달*/}
