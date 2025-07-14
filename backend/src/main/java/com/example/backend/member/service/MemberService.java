@@ -4,6 +4,7 @@ import com.example.backend.member.dto.*;
 import com.example.backend.member.entity.Member;
 import com.example.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -22,6 +23,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtEncoder jwtEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public void add(MemberForm memberForm) {
 
@@ -29,7 +31,8 @@ public class MemberService {
             Member member = new Member();
 
             member.setEmail(memberForm.getEmail());
-            member.setPassword(memberForm.getPassword());
+//            member.setPassword(memberForm.getPassword());
+            member.setPassword(passwordEncoder.encode(memberForm.getPassword()));
             member.setNickName(memberForm.getNickName());
             member.setInfo(memberForm.getInfo());
 
@@ -91,7 +94,8 @@ public class MemberService {
     public void delete(MemberForm memberForm) {
         Member db = memberRepository.findById(memberForm.getEmail())
                 .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
-        if (db.getPassword().equals(memberForm.getPassword())) {
+//        if (db.getPassword().equals(memberForm.getPassword())) {
+        if (passwordEncoder.matches(memberForm.getPassword(), db.getPassword())) {
             memberRepository.delete(db);
         } else {
             throw new RuntimeException("암호가 일치하지 않습니다.");
@@ -128,7 +132,8 @@ public class MemberService {
         Optional<Member> db = memberRepository.findById(loginForm.getEmail());
         if (db.isPresent()) {
             // 있으면 패스워드 맞는지
-            if (db.get().getPassword().equals(loginForm.getPassword())) {
+//            if (db.get().getPassword().equals(loginForm.getPassword())) {
+            if (passwordEncoder.matches(loginForm.getPassword(), db.get().getPassword())) {
                 // token 만들어서 리턴
                 JwtClaimsSet claims = JwtClaimsSet.builder()
                         .subject(loginForm.getEmail())
