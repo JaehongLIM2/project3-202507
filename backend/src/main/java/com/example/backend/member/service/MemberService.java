@@ -107,7 +107,8 @@ public class MemberService {
         // 1. 조회
         Member member = memberRepository.findById(memberForm.getEmail()).get();
         // 1.1 암호 확인
-        if (!member.getPassword().equals(memberForm.getPassword())) {
+//        if (!member.getPassword().equals(memberForm.getPassword())) {
+        if (!passwordEncoder.matches(memberForm.getPassword(), member.getPassword())) {
             throw new RuntimeException("암호가 일치하지 않습니다.");
         }
         // 2. 수정
@@ -119,8 +120,9 @@ public class MemberService {
 
     public void changePassword(ChangePasswordForm data) {
         Member db = memberRepository.findById(data.getEmail()).get();
-        if (db.getPassword().equals(data.getOldPassword())) {
-            db.setPassword(data.getNewPassword());
+//        if (db.getPassword().equals(data.getOldPassword())) {
+        if (passwordEncoder.matches(data.getOldPassword(), db.getPassword())) {
+            db.setPassword(passwordEncoder.encode(data.getNewPassword()));
             memberRepository.save(db);
         } else {
             throw new RuntimeException("이전 패스워드가 일치하지 않습니다.");

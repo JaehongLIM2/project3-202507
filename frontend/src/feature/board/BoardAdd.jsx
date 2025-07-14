@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -11,12 +11,13 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
+import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
 
@@ -26,7 +27,6 @@ export function BoardAdd() {
       .post("/api/board/add", {
         title: title,
         content: content,
-        author: author,
       })
       .then((res) => {
         const message = res.data.message;
@@ -58,9 +58,6 @@ export function BoardAdd() {
   if (content.trim() === "") {
     validate = false;
   }
-  if (author.trim() === "") {
-    validate = false;
-  }
 
   return (
     <Row className="justify-content-center">
@@ -89,10 +86,7 @@ export function BoardAdd() {
         <div>
           <FormGroup className="mb-3" controlId="author1">
             <FormLabel>작성자</FormLabel>
-            <FormControl
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            ></FormControl>
+            <FormControl value={user.nickName} disabled />
           </FormGroup>
         </div>
         <div className="mb-3">
