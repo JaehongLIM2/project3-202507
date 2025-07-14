@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router";
 export function BoardList() {
   const [boardList, setBoardList] = useState(null);
   const navigate = useNavigate();
+  const [pageInfo, setPageInfo] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -14,7 +15,8 @@ export function BoardList() {
       .get(`/api/board/list?${searchParams}`)
       .then((res) => {
         console.log("잘 될 때 코드");
-        setBoardList(res.data);
+        setBoardList(res.data.boardList);
+        setPageInfo(res.data.pageInfo);
       })
       .catch((err) => {
         console.log("잘 안될 때 코드");
@@ -35,7 +37,7 @@ export function BoardList() {
   }
 
   const pageNumber = [];
-  for (let i = 0; i <= 10; i++) {
+  for (let i = pageInfo.leftPageNumber; i <= pageInfo.rightPageNumber; i++) {
     pageNumber.push(i);
   }
 
@@ -52,6 +54,16 @@ export function BoardList() {
       <Row className="my-3">
         <Col>
           <Pagination>
+            <Pagination.First onClick={() => handlePageNumberClick(1)}>
+              처음
+            </Pagination.First>
+            <Pagination.Prev
+              onClick={() =>
+                handlePageNumberClick(pageInfo.leftPageNumber - 10)
+              }
+            >
+              이전
+            </Pagination.Prev>
             {pageNumber.map((pageNumber) => (
               <Pagination.Item
                 key={pageNumber}
@@ -60,6 +72,19 @@ export function BoardList() {
                 {pageNumber}
               </Pagination.Item>
             ))}
+            <Pagination.Next
+              onClick={() =>
+                handlePageNumberClick(pageInfo.rightPageNumber + 1)
+              }
+            >
+              다음
+            </Pagination.Next>
+            <Pagination.Last
+              key={pageNumber}
+              onClick={() => handlePageNumberClick(pageInfo.totalPages)}
+            >
+              마지막
+            </Pagination.Last>
           </Pagination>
         </Col>
       </Row>

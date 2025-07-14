@@ -7,11 +7,15 @@ import com.example.backend.board.repository.BoardRepository;
 import com.example.backend.member.entity.Member;
 import com.example.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -49,9 +53,24 @@ public class BoardService {
         return true;
     }
 
-    public List<BoardListDto> list(String keyword) {
+    public Map<String, Object> list(String keyword, Integer pageNumber) {
 //        return boardRepository.findAllByOrderByIdDesc();
-        return boardRepository.findAllBy(keyword);
+        Page<BoardListDto> boardListDtoPage
+                = boardRepository.findAllBy(keyword, PageRequest.of(pageNumber - 1, 10));
+
+        Integer totalPages = boardListDtoPage.getTotalPages(); // 마지막 페이지
+        Integer rightPageNumber = ((pageNumber - 1) / 10 + 1) * 10;
+        Integer leftPageNumber = rightPageNumber - 9;
+        rightPageNumber = Math.min(rightPageNumber, totalPages);
+        leftPageNumber = Math.max(leftPageNumber, 1);
+
+        var pageInfo = Map.of(
+                "totalPages", totalPages,
+                "rightPageNumber", rightPageNumber,
+                "leftPageNumber", leftPageNumber,
+                "currentPageNumber", pageNumber);
+
+        return Map.of("pageInfo", pageInfo, "boardList", boardListDtoPage.getContent());
     }
 
 
