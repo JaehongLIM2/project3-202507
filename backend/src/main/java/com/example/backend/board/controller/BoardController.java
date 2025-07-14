@@ -1,6 +1,7 @@
 package com.example.backend.board.controller;
 
 import com.example.backend.board.dto.BoardDto;
+import com.example.backend.board.dto.BoardListDto;
 import com.example.backend.board.dto.BoardListInfo;
 import com.example.backend.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,14 @@ public class BoardController {
 
     // 게시글 수정
     @PutMapping("{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateBoard(@PathVariable Integer id,
-                                         @RequestBody BoardDto boardDto) {
+                                         @RequestBody BoardDto boardDto,
+                                         Authentication authentication) {
         boolean result = boardService.validate(boardDto);
 
         if (result) {
-            boardService.update(boardDto);
+            boardService.update(boardDto, authentication);
             return ResponseEntity.ok().body(Map.of(
                     "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
         } else {
@@ -56,7 +59,7 @@ public class BoardController {
     }
 
     @GetMapping("list")
-    public List<BoardListInfo> getAllBoards() {
+    public List<BoardListDto> getAllBoards() {
         System.out.println("BoardController.getAllBoards");
         return boardService.list();
     }

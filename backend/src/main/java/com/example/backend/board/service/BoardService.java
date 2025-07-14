@@ -79,14 +79,15 @@ public class BoardService {
         }
     }
 
-    public void update(BoardDto boardDto) {
+    public void update(BoardDto boardDto, Authentication authentication) {
         // 수정
         // 1. 조회
         Board db = boardRepository.findById(boardDto.getId()).get();
-        // 2. 변경
-        db.setTitle(boardDto.getTitle());
-        db.setContent(boardDto.getContent());
-        db.setAuthor(boardDto.getAuthor());
+        if (db.getAuthor().getEmail().equals(authentication.getName())) {
+            // 2. 변경
+            db.setTitle(boardDto.getTitle());
+            db.setContent(boardDto.getContent());
+        }
         // 3. 저장
         boardRepository.save(db);
     }
