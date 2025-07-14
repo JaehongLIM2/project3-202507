@@ -8,10 +8,11 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router";
+import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
 
 export function MemberDetail() {
   const [member, setMember] = useState(null);
@@ -19,6 +20,8 @@ export function MemberDetail() {
   const [params] = useSearchParams();
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const { logout } = useContext(AuthenticationContext);
 
   useEffect(() => {
     axios
@@ -48,6 +51,7 @@ export function MemberDetail() {
         const message = res.data.message;
         toast(message.text, { type: message.type });
         navigate("/");
+        logout();
       })
       .catch((err) => {
         console.log("bad");
