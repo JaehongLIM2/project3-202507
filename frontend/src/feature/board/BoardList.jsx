@@ -1,16 +1,17 @@
 import { Col, Row, Spinner, Table } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     // 마운트 될 때 (initial render 시) 실행되는 코드
     axios
-      .get("/api/board/list")
+      .get(`/api/board/list?${searchParams}`)
       .then((res) => {
         console.log("잘 될 때 코드");
         setBoardList(res.data);
@@ -21,7 +22,7 @@ export function BoardList() {
       .finally(() => {
         console.log("항상 실행되는 코드ㄸ");
       });
-  }, []);
+  }, [searchParams]);
 
   function handleTableRowClick(id) {
     // 게시물 보기로 이동
