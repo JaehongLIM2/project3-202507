@@ -1,7 +1,10 @@
 import { Link, NavLink } from "react-router";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { useContext } from "react";
+import { AuthenticationContext } from "./AuthenticationContextProvider.jsx";
 
 export function AppNavBar() {
+  const { user } = useContext(AuthenticationContext);
   return (
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -15,21 +18,37 @@ export function AppNavBar() {
               <Nav.Link as={NavLink} to="/">
                 HOME
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/board/add">
-                새 글
-              </Nav.Link>
-              <Nav.Link as={NavLink} to="/signup">
-                회원가입
-              </Nav.Link>
-              <Nav.Link as={NavLink} to="/member/list">
-                회원목록
-              </Nav.Link>
-              <Nav.Link as={NavLink} to="/login">
-                로그인
-              </Nav.Link>
-              <Nav.Link as={NavLink} to="/logout">
-                로그아웃
-              </Nav.Link>
+              {user !== null && (
+                <Nav.Link as={NavLink} to="/board/add">
+                  새 글
+                </Nav.Link>
+              )}
+              {user === null && (
+                <Nav.Link as={NavLink} to="/signup">
+                  회원가입
+                </Nav.Link>
+              )}
+              {user !== null && (
+                <Nav.Link as={NavLink} to="/member/list">
+                  회원목록
+                </Nav.Link>
+              )}
+              {user === null && (
+                <Nav.Link as={NavLink} to="/login">
+                  로그인
+                </Nav.Link>
+              )}
+
+              {user !== null && (
+                <Nav.Link as={NavLink} to="/logout">
+                  로그아웃
+                </Nav.Link>
+              )}
+              {user !== null && (
+                <NavLink as={NavLink} to={`/member?email=${user.email}`}>
+                  {user.nickName}
+                </NavLink>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
