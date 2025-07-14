@@ -41,3 +41,22 @@ FROM auth;
 DROP TABLE member;
 
 DROP TABLE board;
+
+# 검색 테스트용 데이터
+INSERT INTO board
+    (title, content, author)
+VALUES ('qwer', 'asd', '99@99.com'),
+       ('zxc', '123', '88@88.com'),
+       ('456', 'rty', '99@99.com'),
+       ('fgh', 'vbn', '88@88.com'),
+       ('789', 'uio', '99@99.com'),
+       ('jkl', 'nmp', '88@88.com')
+
+
+
+
+
+
+
+
+
