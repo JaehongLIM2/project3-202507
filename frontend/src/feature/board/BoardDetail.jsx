@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
@@ -12,10 +12,12 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
+import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
 
 export function BoardDetail() {
   const [board, setBoard] = useState(null);
   const [modalShow, setModalShow] = useState(false);
+  const { hasAccess } = useContext(AuthenticationContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -98,21 +100,23 @@ export function BoardDetail() {
             />
           </FormGroup>
         </div>
-        <div>
-          <Button
-            onClick={() => setModalShow(true)}
-            className="me-2"
-            variant="outline-danger"
-          >
-            삭제
-          </Button>
-          <Button
-            onClick={() => navigate(`/board/edit?id=${board.id}`)}
-            variant="outline-info"
-          >
-            수정
-          </Button>
-        </div>
+        {hasAccess(board.authorEmail) && (
+          <div>
+            <Button
+              onClick={() => setModalShow(true)}
+              className="me-2"
+              variant="outline-danger"
+            >
+              삭제
+            </Button>
+            <Button
+              onClick={() => navigate(`/board/edit?id=${board.id}`)}
+              variant="outline-info"
+            >
+              수정
+            </Button>
+          </div>
+        )}
       </Col>
 
       <Modal show={modalShow} onHide={() => setModalShow(false)}>

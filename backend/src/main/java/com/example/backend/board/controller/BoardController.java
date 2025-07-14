@@ -32,13 +32,18 @@ public class BoardController {
                                          Authentication authentication) {
         boolean result = boardService.validate(boardDto);
 
-        if (result) {
-            boardService.update(boardDto, authentication);
+        try {
+            if (result) {
+                boardService.update(boardDto, authentication);
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message",
+                        Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
+            }
+        } catch (Exception e) {
             return ResponseEntity.ok().body(Map.of(
-                    "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of("message",
-                    Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
+                    "message", Map.of("type", "error", "text", e.getMessage())));
         }
     }
 

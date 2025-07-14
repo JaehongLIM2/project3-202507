@@ -51,9 +51,9 @@ export function BoardEdit() {
         console.log("bad");
         const message = err.response.data.message;
         if (message) {
-          toast("게시물 수정시 오류가 발생하였습니다.", { type: "warning" });
+          toast(message.text, { type: message.type });
         } else {
-          toast(message.text, { type: "warning" });
+          toast("게시물 수정시 오류가 발생하였습니다.", { type: "warning" });
         }
       })
       .finally(() => {

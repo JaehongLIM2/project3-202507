@@ -64,7 +64,7 @@ public class BoardService {
 //        boardDto.setAuthor(board.getAuthor());
 //        boardDto.setInsertedAt(board.getInsertedAt());
 
-        return boardDto;
+        return board;
     }
 
     public void deleteById(Integer id, Authentication authentication) {
@@ -87,9 +87,11 @@ public class BoardService {
             // 2. 변경
             db.setTitle(boardDto.getTitle());
             db.setContent(boardDto.getContent());
+            boardRepository.save(db);
+        } else {
+            throw new RuntimeException("권한이 없습니다.");
         }
         // 3. 저장
-        boardRepository.save(db);
     }
 
 }
