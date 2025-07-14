@@ -4,6 +4,8 @@ import com.example.backend.board.dto.BoardDto;
 import com.example.backend.board.dto.BoardListInfo;
 import com.example.backend.board.entity.Board;
 import com.example.backend.board.repository.BoardRepository;
+import com.example.backend.member.entity.Member;
+import com.example.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     public void add(BoardDto dto, Authentication authentication) {
         if (authentication == null) {
@@ -26,7 +29,9 @@ public class BoardService {
         Board board = new Board();
         board.setTitle(dto.getTitle());
         board.setContent(dto.getContent());
-        board.setAuthor(authentication.getName());
+
+        Member author = memberRepository.findById(authentication.getName()).get();
+        board.setAuthor(author);
 
         // repository 에 save 실행
         boardRepository.save(board);
