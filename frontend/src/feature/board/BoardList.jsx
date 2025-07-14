@@ -54,37 +54,35 @@ export function BoardList() {
       <Row className="my-3">
         <Col>
           <Pagination>
-            <Pagination.First onClick={() => handlePageNumberClick(1)}>
-              처음
-            </Pagination.First>
+            <Pagination.First
+              disabled={pageInfo.currentPageNumber == 1}
+              onClick={() => handlePageNumberClick(1)}
+            ></Pagination.First>
             <Pagination.Prev
+              disabled={pageInfo.leftPageNumber <= 1}
               onClick={() =>
                 handlePageNumberClick(pageInfo.leftPageNumber - 10)
               }
-            >
-              이전
-            </Pagination.Prev>
+            ></Pagination.Prev>
             {pageNumber.map((pageNumber) => (
               <Pagination.Item
                 key={pageNumber}
                 onClick={() => handlePageNumberClick(pageNumber)}
+                active={pageInfo.currentPageNumber == pageNumber}
               >
                 {pageNumber}
               </Pagination.Item>
             ))}
             <Pagination.Next
+              disabled={pageInfo.rightPageNumber <= pageInfo.totalPages}
               onClick={() =>
                 handlePageNumberClick(pageInfo.rightPageNumber + 1)
               }
-            >
-              다음
-            </Pagination.Next>
+            ></Pagination.Next>
             <Pagination.Last
-              key={pageNumber}
+              disabled={pageInfo.currentPageNumber === pageInfo.totalPages}
               onClick={() => handlePageNumberClick(pageInfo.totalPages)}
-            >
-              마지막
-            </Pagination.Last>
+            ></Pagination.Last>
           </Pagination>
         </Col>
       </Row>
