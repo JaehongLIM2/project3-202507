@@ -1,7 +1,9 @@
 package com.example.backend.member.service;
 
 import com.example.backend.member.dto.*;
+import com.example.backend.member.entity.Auth;
 import com.example.backend.member.entity.Member;
+import com.example.backend.member.repository.AuthRepository;
 import com.example.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +17,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,6 +27,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtEncoder jwtEncoder;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthRepository authRepository;
 
     public void add(MemberForm memberForm) {
 
@@ -136,12 +140,18 @@ public class MemberService {
             // 있으면 패스워드 맞는지
 //            if (db.get().getPassword().equals(loginForm.getPassword())) {
             if (passwordEncoder.matches(loginForm.getPassword(), db.get().getPassword())) {
+                List<Auth> authList = authRepository.findByMember(db.get());
+                String authListString = authList.stream()
+                        .map(auth -> auth.getId().getAuthName())
+                        .collect(Collectors.joining(" "));
+
                 // token 만들어서 리턴
                 JwtClaimsSet claims = JwtClaimsSet.builder()
                         .subject(loginForm.getEmail())
                         .issuer("self")
                         .issuedAt(Instant.now())
                         .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 365))
+                        .claim("scp", authListString)
                         .build();
                 return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
             }

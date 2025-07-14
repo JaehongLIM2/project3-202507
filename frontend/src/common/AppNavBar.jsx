@@ -45,9 +45,9 @@ export function AppNavBar() {
                 </Nav.Link>
               )}
               {user !== null && (
-                <NavLink as={NavLink} to={`/member?email=${user.email}`}>
+                <Nav.Link as={NavLink} to={`/member?email=${user.email}`}>
                   {user.nickName}
-                </NavLink>
+                </Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>

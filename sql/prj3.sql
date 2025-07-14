@@ -22,6 +22,22 @@ CREATE TABLE member
     CONSTRAINT pk_member PRIMARY KEY (email)
 );
 
+# 권한 테이블
+CREATE TABLE auth
+(
+    member_email VARCHAR(255) NOT NULL,
+    auth_name    VARCHAR(255) NOT NULL,
+    primary key (member_email, auth_name),
+    FOREIGN KEY (member_email) REFERENCES member (email)
+);
+
+INSERT INTO auth
+    (member_email, auth_name)
+VALUES ('admin@abc.com', 'admin');
+
+SELECT *
+FROM auth;
+
 DROP TABLE member;
 
 DROP TABLE board;
