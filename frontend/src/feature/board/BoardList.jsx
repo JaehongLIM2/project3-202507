@@ -66,7 +66,7 @@ export function BoardList() {
                 >
                   <td>{board.id}</td>
                   <td>{board.title}</td>
-                  <td className="d-none d-md-table-cell">{board.author}</td>
+                  <td className="d-none d-md-table-cell">{board.nickName}</td>
                   <td className="d-none d-lg-table-cell">{board.timesAgo}</td>
                 </tr>
               ))}
