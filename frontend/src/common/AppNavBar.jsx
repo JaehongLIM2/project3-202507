@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate, useSearchParams } from "react-router";
 import {
   Button,
   Container,
@@ -8,13 +8,22 @@ import {
   Navbar,
   Form,
 } from "react-bootstrap";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "./AuthenticationContextProvider.jsx";
 
 export function AppNavBar() {
   const { user, isAdmin } = useContext(AuthenticationContext);
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q) {
+      setKeyword(q);
+    } else {
+      setKeyword("");
+    }
+  }, [searchParams]);
 
   function handleSearchFormSubmit(e) {
     e.preventDefault();
