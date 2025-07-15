@@ -1,12 +1,16 @@
-import { Button, FormControl } from "react-bootstrap";
-import { useState } from "react";
+import { Button, FormControl, Spinner } from "react-bootstrap";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
 
 export function CommentAdd({ boardId }) {
   const [comment, setComment] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useContext(AuthenticationContext);
 
   function handleCommentSaveClick() {
+    setIsProcessing(true);
     axios
       .post("/api/comment", { boardId: boardId, comment: comment })
       .then((res) => {
@@ -22,7 +26,9 @@ export function CommentAdd({ boardId }) {
           toast(message.text, { type: message.type });
         }
       })
-      .finally(() => {});
+      .finally(() => {
+        setIsProcessing(false);
+      });
   }
 
   let saveButtonDisabled = false;
@@ -36,10 +42,15 @@ export function CommentAdd({ boardId }) {
         as="textarea"
         rows={3}
         value={comment}
+        disabled={user === null}
         onChange={(e) => setComment(e.target.value)}
       />
 
-      <Button disabled={saveButtonDisabled} onClick={handleCommentSaveClick}>
+      <Button
+        disabled={isProcessing || saveButtonDisabled}
+        onClick={handleCommentSaveClick}
+      >
+        {isProcessing && <Spinner size="sm" />}
         댓글 저장
       </Button>
     </div>
