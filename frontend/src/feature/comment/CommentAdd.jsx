@@ -36,7 +36,7 @@ export function CommentAdd({ boardId, isProcessing, setIsProcessing }) {
   }
 
   return (
-    <div>
+    <div className="position-relative">
       <FloatingLabel
         controlId="commentTextarea1"
         label={
@@ -52,14 +52,15 @@ export function CommentAdd({ boardId, isProcessing, setIsProcessing }) {
               : "댓글을 작성해보세요."
           }
           as="textarea"
-          style={{ height: "60px" }}
+          style={{ height: "150px" }}
           value={comment}
           disabled={user === null}
           onChange={(e) => setComment(e.target.value)}
         />
       </FloatingLabel>
-      <div className="d-flex justify-content-end">
+      <div className="position-absolute bottom-0 end-0 m-2">
         <Button
+          size="sm"
           className="mt-2"
           variant="outline-primary"
           disabled={isProcessing || saveButtonDisabled}
