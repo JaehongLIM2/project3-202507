@@ -1,6 +1,7 @@
 package com.example.backend.member.service;
 
 import com.example.backend.board.repository.BoardRepository;
+import com.example.backend.comment.repository.CommentRepository;
 import com.example.backend.member.dto.*;
 import com.example.backend.member.entity.Auth;
 import com.example.backend.member.entity.Member;
@@ -30,6 +31,7 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthRepository authRepository;
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     public void add(MemberForm memberForm) {
 
@@ -102,6 +104,7 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("해당 회원이 존재하지 않습니다."));
 //        if (db.getPassword().equals(memberForm.getPassword())) {
         if (passwordEncoder.matches(memberForm.getPassword(), db.getPassword())) {
+            commentRepository.deleteByAuthor(db);
             boardRepository.deleteByAuthor(db);
             memberRepository.delete(db);
         } else {

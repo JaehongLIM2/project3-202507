@@ -65,12 +65,14 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
             disabled={isProcessing}
             onClick={() => setDeleteModalShow(true)}
           >
+            {isProcessing && <Spinner size="sm" />}
             삭제
           </Button>
           <Button
             disabled={isProcessing}
             onClick={() => setEditModalShow(true)}
           >
+            {isProcessing && <Spinner size="sm" />}
             수정
           </Button>
         </div>
