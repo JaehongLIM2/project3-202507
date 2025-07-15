@@ -5,7 +5,7 @@ import axios from "axios";
 
 function CommentItem({ comment }) {
   return (
-    <div className="border-1 m-3">
+    <div className="border m-3">
       <div className="d-flex justify-content-between m-3">
         <div>{comment.authorNickName}</div>
         <div>{comment.timesAgo}</div>
