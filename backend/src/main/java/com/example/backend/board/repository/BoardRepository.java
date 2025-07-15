@@ -45,4 +45,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     BoardDto findBoardById(Integer id);
 
     void deleteByAuthor(Member author);
+
+    List<Board> findByAuthor(Member db);
 }

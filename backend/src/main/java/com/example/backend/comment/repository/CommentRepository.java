@@ -1,5 +1,6 @@
 package com.example.backend.comment.repository;
 
+import com.example.backend.board.entity.Board;
 import com.example.backend.comment.dto.CommentListDto;
 import com.example.backend.comment.entity.Comment;
 import com.example.backend.member.entity.Member;
@@ -26,4 +27,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
     void deleteByBoardId(Integer boardId);
 
     void deleteByAuthor(Member db);
+
+    void deleteByBoard(Board board);
 }
