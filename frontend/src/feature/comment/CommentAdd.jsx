@@ -14,6 +14,7 @@ export function CommentAdd({ boardId }) {
         if (message) {
           toast(message.text, { type: message.type });
         }
+        setComment("");
       })
       .catch((err) => {
         const message = err.response.data.message;
@@ -22,6 +23,11 @@ export function CommentAdd({ boardId }) {
         }
       })
       .finally(() => {});
+  }
+
+  let saveButtonDisabled = false;
+  if (comment.trim().length == 0) {
+    saveButtonDisabled = true;
   }
 
   return (
@@ -33,7 +39,9 @@ export function CommentAdd({ boardId }) {
         onChange={(e) => setComment(e.target.value)}
       />
 
-      <Button onClick={handleCommentSaveClick}>댓글 저장</Button>
+      <Button disabled={saveButtonDisabled} onClick={handleCommentSaveClick}>
+        댓글 저장
+      </Button>
     </div>
   );
 }
