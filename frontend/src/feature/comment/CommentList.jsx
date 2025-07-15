@@ -19,7 +19,7 @@ export function CommentList({ boardId }) {
   const [commentList, setCommentList] = useState(null);
   useEffect(() => {
     axios
-      .get("/api/comment/board/{boardId}")
+      .get(`/api/comment/board/${boardId}`)
       .then((res) => {
         setCommentList(res.data);
       })
