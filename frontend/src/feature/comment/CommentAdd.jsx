@@ -4,9 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
 
-export function CommentAdd({ boardId }) {
+export function CommentAdd({ boardId, isProcessing, setIsProcessing }) {
   const [comment, setComment] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
   const { user } = useContext(AuthenticationContext);
 
   function handleCommentSaveClick() {
@@ -32,7 +31,7 @@ export function CommentAdd({ boardId }) {
   }
 
   let saveButtonDisabled = false;
-  if (comment.trim().length == 0) {
+  if (comment.trim().length === 0) {
     saveButtonDisabled = true;
   }
 
