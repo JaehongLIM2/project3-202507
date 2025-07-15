@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 function CommentItem({ comment, isProcessing, setIsProcessing }) {
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const [editModalShow, setEditModalShow] = useState(false);
-  const [nextComment, setNextComment] = useState(comment);
+  const [nextComment, setNextComment] = useState(comment.comment);
 
   function handleDeleteButtonClick() {
     setIsProcessing(true);
@@ -32,7 +32,22 @@ function CommentItem({ comment, isProcessing, setIsProcessing }) {
   }
 
   function handleUpdateButtonClick() {
-    // TODO : 댓글 수정 코드 . . .
+    setIsProcessing(true);
+    axios
+      .put(`/api/comment`, {
+        id: comment.id,
+        comment: nextComment,
+      })
+      .then((res) => {
+        toast.success("댓글이 수정되었습니다.");
+      })
+      .catch((err) => {
+        toast.error("댓글 수정 중 문제가 발생하였습니다.");
+      })
+      .finally(() => {
+        setIsProcessing(false);
+        setEditModalShow(false);
+      });
   }
 
   return (
