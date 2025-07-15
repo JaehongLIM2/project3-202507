@@ -12,6 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
             SELECT new com.example.backend.comment.dto.CommentListDto(
             c.id,
             c.board.id,
+            c.author.email,
             c.author.nickName,
             c.comment,
             c.insertedAt)
