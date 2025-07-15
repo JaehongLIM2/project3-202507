@@ -10,6 +10,9 @@ import {
 } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "./AuthenticationContextProvider.jsx";
+import { FaUserAstronaut, FaUserSecret } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
+import { GiAstronautHelmet } from "react-icons/gi";
 
 export function AppNavBar() {
   const { user, isAdmin } = useContext(AuthenticationContext);
@@ -36,6 +39,7 @@ export function AppNavBar() {
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand to="/" as={Link}>
+            <GiAstronautHelmet className="me-2" />
             PRJ3
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -75,7 +79,7 @@ export function AppNavBar() {
               )}
               {user !== null && (
                 <Nav.Link as={NavLink} to={`/member?email=${user.email}`}>
-                  {user.nickName}
+                  <FaUserAstronaut /> {user.nickName}
                 </Nav.Link>
               )}
             </Nav>
@@ -90,7 +94,9 @@ export function AppNavBar() {
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
                 />
-                <Button type="submit">검색</Button>
+                <Button type="submit">
+                  <FiSearch />
+                </Button>
               </InputGroup>
             </Form>
           </Navbar.Collapse>

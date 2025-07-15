@@ -3,6 +3,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   FormControl,
   FormGroup,
   FormLabel,
@@ -10,6 +13,10 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
+import { VscTrash } from "react-icons/vsc";
+import { TiPencil } from "react-icons/ti";
+import { FaUserAstronaut, FaUserSecret } from "react-icons/fa";
+import { RxClock } from "react-icons/rx";
 
 export function CommentItem({ comment, isProcessing, setIsProcessing }) {
   const [deleteModalShow, setDeleteModalShow] = useState(false);
@@ -53,34 +60,57 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
   }
 
   return (
-    <div className="border m-3">
-      <div className="d-flex justify-content-between m-3">
-        <div className="fw-bold">작성자 : {comment.authorNickName}</div>
-        <div>{comment.timesAgo}</div>
-      </div>
-      <div className="ms-3">{comment.comment}</div>
-      {hasAccess(comment.authorEmail) && (
-        <div className="d-flex justify-content-end">
-          <Button
-            className="m-1"
-            size="sm"
-            disabled={isProcessing}
-            onClick={() => setDeleteModalShow(true)}
-          >
-            {isProcessing && <Spinner size="sm" />}
-            삭제
-          </Button>
-          <Button
-            className="m-1"
-            size="sm"
-            disabled={isProcessing}
-            onClick={() => setEditModalShow(true)}
-          >
-            {isProcessing && <Spinner size="sm" />}
-            수정
-          </Button>
-        </div>
-      )}
+    <>
+      <Card className="my-3">
+        <CardHeader className="d-flex justify-content-between">
+          <div className="fw-bold">
+            <FaUserAstronaut /> 작성자 : {comment.authorNickName}
+          </div>
+          <small>
+            <RxClock /> {comment.timesAgo}
+          </small>
+        </CardHeader>
+        <CardBody>
+          <div style={{ whiteSpace: "pre-wrap" }}>{comment.comment}</div>
+        </CardBody>
+
+        {hasAccess(comment.authorEmail) && (
+          <div className="d-flex justify-content-end">
+            <Button
+              className="m-1"
+              size="sm"
+              variant="outline-danger"
+              disabled={isProcessing}
+              onClick={() => setDeleteModalShow(true)}
+            >
+              {isProcessing ? (
+                <>
+                  <Spinner size="sm" />
+                  삭제 중...
+                </>
+              ) : (
+                <VscTrash />
+              )}
+            </Button>
+            <Button
+              className="m-1"
+              size="sm"
+              variant="outline-primary"
+              disabled={isProcessing}
+              onClick={() => setEditModalShow(true)}
+            >
+              {isProcessing ? (
+                <>
+                  <Spinner size="sm" />
+                  수정 중...
+                </>
+              ) : (
+                <TiPencil />
+              )}
+            </Button>
+          </div>
+        )}
+      </Card>
 
       {/* 댓글 삭제 모달*/}
       <Modal show={deleteModalShow} onHide={() => setDeleteModalShow(false)}>
@@ -108,7 +138,7 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
                 삭제 중...
               </>
             ) : (
-              "삭제"
+              <VscTrash />
             )}
           </Button>
         </Modal.Footer>
@@ -141,11 +171,11 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
                   setEditModalShow(false);
                 }}
               >
-                취소
+                <VscTrash />
               </Button>
               <Button
                 className="m-1"
-                variant="danger"
+                variant="primary"
                 onClick={handleUpdateButtonClick}
               >
                 {isProcessing ? (
@@ -154,13 +184,13 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
                     수정 중...
                   </>
                 ) : (
-                  "수정"
+                  <TiPencil />
                 )}
               </Button>
             </Modal.Footer>
           </Modal>
         </>
       )}
-    </div>
+    </>
   );
 }

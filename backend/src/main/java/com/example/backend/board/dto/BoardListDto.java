@@ -17,6 +17,7 @@ public class BoardListDto {
     private String title;
     private String nickName;
     private LocalDateTime insertedAt;
+    private Long countComment;
 
     public String getTimesAgo() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));

@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
+import { LuSend } from "react-icons/lu";
 
 export function CommentAdd({ boardId, isProcessing, setIsProcessing }) {
   const [comment, setComment] = useState("");
@@ -68,11 +69,11 @@ export function CommentAdd({ boardId, isProcessing, setIsProcessing }) {
         >
           {isProcessing ? (
             <>
-              <Spinner size="sm" />
+              <Spinner />
               저장 중...
             </>
           ) : (
-            "댓글 저장"
+            <LuSend />
           )}
         </Button>
       </div>
