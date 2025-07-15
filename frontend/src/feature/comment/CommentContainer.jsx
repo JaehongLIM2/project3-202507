@@ -10,7 +10,7 @@ export function CommentContainer({ boardId }) {
       <h3>댓글 창</h3>
 
       <CommentAdd boardId={boardId} />
-      <CommentList />
+      <CommentList boardId={boardId} />
     </div>
   );
 }
