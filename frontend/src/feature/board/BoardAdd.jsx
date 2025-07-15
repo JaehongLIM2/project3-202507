@@ -89,7 +89,7 @@ export function BoardAdd() {
             <FormControl value={user.nickName} disabled />
           </FormGroup>
         </div>
-        <div className="mb-3">
+        <div className="mb-3 d-flex justify-content-end">
           <Button
             onClick={handleSaveButtonClick}
             disabled={isProcessing || !validate}
