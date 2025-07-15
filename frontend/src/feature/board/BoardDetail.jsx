@@ -102,7 +102,7 @@ export function BoardDetail() {
           </FormGroup>
         </div>
         {hasAccess(board.authorEmail) && (
-          <div>
+          <div className="d-flex justify-content-end">
             <Button
               onClick={() => setModalShow(true)}
               className="me-2"
@@ -118,6 +118,9 @@ export function BoardDetail() {
             </Button>
           </div>
         )}
+        <div className="my-4">
+          <hr />
+        </div>
         {/*  댓글 컴포넌트 */}
         <CommentContainer boardId={board.id} />
       </Col>

@@ -58,14 +58,23 @@ export function CommentAdd({ boardId, isProcessing, setIsProcessing }) {
           onChange={(e) => setComment(e.target.value)}
         />
       </FloatingLabel>
-
-      <Button
-        disabled={isProcessing || saveButtonDisabled}
-        onClick={handleCommentSaveClick}
-      >
-        {isProcessing && <Spinner size="sm" />}
-        댓글 저장
-      </Button>
+      <div className="d-flex justify-content-end">
+        <Button
+          className="mt-2"
+          variant="outline-primary"
+          disabled={isProcessing || saveButtonDisabled}
+          onClick={handleCommentSaveClick}
+        >
+          {isProcessing ? (
+            <>
+              <Spinner size="sm" />
+              저장 중...
+            </>
+          ) : (
+            "댓글 저장"
+          )}
+        </Button>
+      </div>
     </div>
   );
 }

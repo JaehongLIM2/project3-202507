@@ -55,13 +55,15 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
   return (
     <div className="border m-3">
       <div className="d-flex justify-content-between m-3">
-        <div>{comment.authorNickName}</div>
+        <div className="fw-bold">작성자 : {comment.authorNickName}</div>
         <div>{comment.timesAgo}</div>
       </div>
-      <div>{comment.comment}</div>
+      <div className="ms-3">{comment.comment}</div>
       {hasAccess(comment.authorEmail) && (
-        <div>
+        <div className="d-flex justify-content-end">
           <Button
+            className="m-1"
+            size="sm"
             disabled={isProcessing}
             onClick={() => setDeleteModalShow(true)}
           >
@@ -69,6 +71,8 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
             삭제
           </Button>
           <Button
+            className="m-1"
+            size="sm"
             disabled={isProcessing}
             onClick={() => setEditModalShow(true)}
           >
@@ -86,18 +90,26 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
         <Modal.Body>댓글을 삭제하시겠습니까?</Modal.Body>
         <Modal.Footer>
           <Button
+            className="m-1"
             variant="outline-dark"
             onClick={() => setDeleteModalShow(false)}
           >
             취소
           </Button>
           <Button
+            className="m-1"
             disabled={isProcessing}
             variant="danger"
             onClick={handleDeleteButtonClick}
           >
-            {isProcessing && <Spinner size="sm" />}
-            삭제
+            {isProcessing ? (
+              <>
+                <Spinner size="sm" />
+                삭제 중...
+              </>
+            ) : (
+              "삭제"
+            )}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -122,6 +134,7 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
             </Modal.Body>
             <Modal.Footer>
               <Button
+                className="m-1"
                 variant="outline-dark"
                 onClick={() => {
                   setNextComment(comment.comment);
@@ -130,9 +143,19 @@ export function CommentItem({ comment, isProcessing, setIsProcessing }) {
               >
                 취소
               </Button>
-              <Button variant="danger" onClick={handleUpdateButtonClick}>
-                {isProcessing && <Spinner size="sm" />}
-                수정
+              <Button
+                className="m-1"
+                variant="danger"
+                onClick={handleUpdateButtonClick}
+              >
+                {isProcessing ? (
+                  <>
+                    <Spinner size="sm" />
+                    수정 중...
+                  </>
+                ) : (
+                  "수정"
+                )}
               </Button>
             </Modal.Footer>
           </Modal>
