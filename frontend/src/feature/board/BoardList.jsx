@@ -2,7 +2,7 @@ import { Badge, Col, Pagination, Row, Spinner, Table } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router";
-import { FaRegComments } from "react-icons/fa";
+import { FaRegComments, FaRegImages } from "react-icons/fa";
 import { GoHeartFill } from "react-icons/go";
 
 export function BoardList() {
@@ -87,9 +87,10 @@ export function BoardList() {
                     <td>
                       <div className="d-flex gap-2">
                         <span>{board.title}</span>
+                        {/* 댓글 갯수*/}
                         <span>
                           {board.countComment > 0 && (
-                            <Badge bg="light" text="dark">
+                            <Badge bg="light" text="primary">
                               <div className="d-flex gap-1">
                                 <FaRegComments />
                                 {board.countComment}
@@ -97,12 +98,24 @@ export function BoardList() {
                             </Badge>
                           )}
                         </span>
+                        {/* 좋아요 갯수 */}
                         <span>
                           {board.countLike > 0 && (
-                            <Badge bg="light" text="dark">
+                            <Badge bg="light" text="danger">
                               <div className="d-flex gap-1">
                                 <GoHeartFill />
                                 {board.countLike}
+                              </div>
+                            </Badge>
+                          )}
+                        </span>
+                        {/* 파일 갯수*/}
+                        <span>
+                          {board.countFile > 0 && (
+                            <Badge bg="light" text="dark">
+                              <div className="d-flex gap-1">
+                                <FaRegImages />
+                                {board.countFile}
                               </div>
                             </Badge>
                           )}
