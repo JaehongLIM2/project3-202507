@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import { AuthenticationContext } from "../../common/AuthenticationContextProvider.jsx";
 import { CommentContainer } from "../comment/CommentContainer.jsx";
+import { LikeContainer } from "../like/LikeContainer.jsx";
 
 export function BoardDetail() {
   const [board, setBoard] = useState(null);
@@ -67,7 +68,10 @@ export function BoardDetail() {
   return (
     <Row className="justify-content-center">
       <Col xs={12} md={8} lg={6}>
-        <h3 className="mb-4">{board.id}번 게시물</h3>
+        <div className="d-flex justify-content-between">
+          <h3 className="mb-4">{board.id}번 게시물</h3>
+          <LikeContainer boardId={board.id} />
+        </div>
         <div>
           <FormGroup className="mb-3" controlId="title1">
             <FormLabel>제목</FormLabel>
