@@ -121,11 +121,11 @@ export function BoardEdit() {
                     value={file.name}
                     onChange={(e) => {
                       if (e.target.checked) {
+                        setDeleteFiles([...deleteFiles, e.target.value]);
+                      } else {
                         setDeleteFiles(
                           deleteFiles.filter((item) => item !== e.target.value),
                         );
-                      } else {
-                        setDeleteFiles([...deleteFiles, e.target.value]);
                       }
                     }}
                   />

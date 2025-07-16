@@ -1,15 +1,13 @@
 package com.example.backend.board.service;
 
-import com.example.backend.board.dto.BoardAddForm;
-import com.example.backend.board.dto.BoardDto;
-import com.example.backend.board.dto.BoardFileDto;
-import com.example.backend.board.dto.BoardListDto;
+import com.example.backend.board.dto.*;
 import com.example.backend.board.entity.Board;
 import com.example.backend.board.entity.BoardFile;
 import com.example.backend.board.entity.BoardFileId;
 import com.example.backend.board.repository.BoardFileRepository;
 import com.example.backend.board.repository.BoardRepository;
 import com.example.backend.comment.repository.CommentRepository;
+import com.example.backend.like.repository.BoardLikeRepository;
 import com.example.backend.member.entity.Member;
 import com.example.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +36,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final BoardFileRepository boardFileRepository;
+    private final BoardLikeRepository boardLikeRepository;
 
     public void add(BoardAddForm dto, Authentication authentication) {
         if (authentication == null) {
@@ -55,13 +54,12 @@ public class BoardService {
         boardRepository.save(board);
 
         // file 저장하기
-        saveFiles(board, dto);
+        saveFiles(board, dto.getFiles());
 
 
     }
 
-    private void saveFiles(Board board, BoardAddForm dto) {
-        List<MultipartFile> files = dto.getFiles();
+    private void saveFiles(Board board, List<MultipartFile> files) {
         if (files != null && files.size() > 0) {
             for (MultipartFile file : files) {
                 if (files != null && files.size() > 0) {
@@ -169,6 +167,11 @@ public class BoardService {
         Board db = boardRepository.findById(id).get();
 
         if (db.getAuthor().getEmail().equals(authentication.getName())) {
+            // 좋아요
+            boardLikeRepository.deleteByBoard(db);
+            // 파일
+            boardFileRepository.deleteByBoard(db);
+            // 댓글
             commentRepository.deleteByBoardId(id);
             boardRepository.deleteById(id);
         } else {
@@ -176,7 +179,7 @@ public class BoardService {
         }
     }
 
-    public void update(BoardDto boardDto, Authentication authentication) {
+    public void update(BoardUpdateForm boardDto, Authentication authentication) {
         // 수정
         // 1. 조회
         Board db = boardRepository.findById(boardDto.getId()).get();
@@ -184,11 +187,36 @@ public class BoardService {
             // 2. 변경
             db.setTitle(boardDto.getTitle());
             db.setContent(boardDto.getContent());
+
+            // 파일 지우기
+            deleteFiles(db, boardDto.getDeleteFiles());
+            // 파일 추가
+            saveFiles(db, boardDto.getFiles());
+            // 3. 저장
             boardRepository.save(db);
         } else {
             throw new RuntimeException("권한이 없습니다.");
         }
-        // 3. 저장
+    }
+
+    private void deleteFiles(Board db, String[] deleteFiles) {
+        if (deleteFiles != null && deleteFiles.length > 0) {
+            for (String file : deleteFiles) {
+                // board_file table 의 record 지우고
+                BoardFileId boardFileId = new BoardFileId();
+                boardFileId.setBoardId(db.getId());
+                boardFileId.setName(file);
+                boardFileRepository.deleteById(boardFileId);
+
+
+                // C:/Temp/prj3/boardFile/2324/tiger.jpg 지우고
+                File targetFile
+                        = new File("C:/Temp/prj3/boardFile/" + db.getId() + "/" + file);
+                if (!targetFile.exists()) {
+                    targetFile.delete();
+                }
+            }
+        }
     }
 
     public boolean validateForAdd(BoardAddForm dto) {
@@ -196,6 +224,17 @@ public class BoardService {
             return false;
         }
         if (dto.getContent() == null || dto.getContent().trim().isBlank()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean validateForUpdate(BoardUpdateForm boardDto) {
+        if (boardDto.getTitle() == null || boardDto.getTitle().trim().isBlank()) {
+            return false;
+        }
+        if (boardDto.getContent() == null || boardDto.getContent().trim().isBlank()) {
             return false;
         }
 

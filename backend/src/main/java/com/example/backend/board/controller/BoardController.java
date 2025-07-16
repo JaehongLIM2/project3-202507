@@ -9,7 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 //@Controller
@@ -26,34 +26,24 @@ public class BoardController {
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateBoard(@PathVariable Integer id,
-                                         BoardUpdateDto boardDto,
+                                         BoardUpdateForm boardDto,
                                          Authentication authentication) {
 
-        System.out.println(boardDto);
-        System.out.println("추가파일 ===");
-        boardDto.getFiles().forEach(file -> {
-            System.out.println(file.getOriginalFilename());
-        });
-        System.out.println("삭제파일 ===");
-        boardDto.getDeleteFiles().forEach(System.out::println);
-
-
-        return null;
-//        boolean result = boardService.validate(boardDto);
+        boolean result = boardService.validateForUpdate(boardDto);
 //
-//        try {
-//            if (result) {
-//                boardService.update(boardDto, authentication);
-//                return ResponseEntity.ok().body(Map.of(
-//                        "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
-//            } else {
-//                return ResponseEntity.badRequest().body(Map.of("message",
-//                        Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.ok().body(Map.of(
-//                    "message", Map.of("type", "error", "text", e.getMessage())));
-//        }
+        try {
+            if (result) {
+                boardService.update(boardDto, authentication);
+                return ResponseEntity.ok().body(Map.of(
+                        "message", Map.of("type", "success", "text", id + "번 게시물이 수정 되었습니다.")));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message",
+                        Map.of("type", "error", "text", "입력한 내용이 유효하지 않습니다.")));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "error", "text", e.getMessage())));
+        }
     }
 
     // 게시글 삭제
