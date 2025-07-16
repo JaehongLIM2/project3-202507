@@ -60,10 +60,7 @@ export function BoardList() {
             <Table striped={true} hover={true}>
               <thead>
                 <tr>
-                  <th style={{ width: "70px" }}>#</th>
-                  <th style={{ width: "70px" }}>
-                    <GoHeartFill />
-                  </th>
+                  <th style={{ width: "70x" }}>#</th>
                   <th>제목</th>
                   <th
                     className="d-none d-md-table-cell"
@@ -87,7 +84,6 @@ export function BoardList() {
                     onClick={() => handleTableRowClick(board.id)}
                   >
                     <td>{board.id}</td>
-                    <td>{board.countLike > 0 ? board.countLike : ""}</td>
                     <td>
                       <div className="d-flex gap-2">
                         <span>{board.title}</span>
@@ -97,6 +93,16 @@ export function BoardList() {
                               <div className="d-flex gap-1">
                                 <FaRegComments />
                                 {board.countComment}
+                              </div>
+                            </Badge>
+                          )}
+                        </span>
+                        <span>
+                          {board.countLike > 0 && (
+                            <Badge bg="light" text="dark">
+                              <div className="d-flex gap-1">
+                                <GoHeartFill />
+                                {board.countLike}
                               </div>
                             </Badge>
                           )}
