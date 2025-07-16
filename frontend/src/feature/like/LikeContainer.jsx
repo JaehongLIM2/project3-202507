@@ -42,7 +42,7 @@ export function LikeContainer({ boardId }) {
         <div>
           <OverlayTrigger
             placement="top"
-            trigger="hover"
+            trigger={["hover", "focus"]}
             overlay={<Tooltip id="tooltip1">로그인 하세요.</Tooltip>}
           >
             <GoHeart />
