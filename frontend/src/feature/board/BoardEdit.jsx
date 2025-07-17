@@ -90,10 +90,10 @@ export function BoardEdit() {
   return (
     <Row className="justify-content-center">
       <Col xs={12} md={8} lg={6}>
-        <h2 className="mb4">{board.id}번 게시물 수정</h2>
+        <h2 className="mb-4">{board.id}번 게시물 수정</h2>
         <div>
           <FormGroup className="mb-3" controlId="title1">
-            <FormLabel>제목</FormLabel>
+            <FormLabel className="fw-bold">제목</FormLabel>
             <FormControl
               value={board.title}
               onChange={(e) => setBoard({ ...board, title: e.target.value })}
@@ -102,7 +102,7 @@ export function BoardEdit() {
         </div>
         <div>
           <FormGroup className="mb-3" controlId="content1">
-            <FormLabel>본문</FormLabel>
+            <FormLabel className="fw-bold">본문</FormLabel>
             <FormControl
               as="textarea"
               rows={6}
@@ -160,7 +160,7 @@ export function BoardEdit() {
         </div>
         <div>
           <FormGroup className="mb-3" controlId="files1">
-            <FormLabel>추가 이미지 파일</FormLabel>
+            <FormLabel className="fw-bold">추가 이미지 파일</FormLabel>
             <FormControl
               type="file"
               multiple
@@ -171,7 +171,7 @@ export function BoardEdit() {
         </div>
         <div>
           <FormGroup className="mb-3" controlId="author1">
-            <FormLabel>작성자</FormLabel>
+            <FormLabel className="fw-bold">작성자</FormLabel>
             <FormControl value={board.authorNickName} disabled />
           </FormGroup>
         </div>

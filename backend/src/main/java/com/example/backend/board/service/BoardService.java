@@ -268,13 +268,17 @@ public class BoardService {
                 boardFileId.setName(file);
                 boardFileRepository.deleteById(boardFileId);
 
+                // s3의 파일지우기
+                String objectKey = "prj3/board/" + db.getId() + "/" + file;
+                deleteFile(objectKey);
 
-                // C:/Temp/prj3/boardFile/2324/tiger.jpg 지우고
-                File targetFile
-                        = new File("C:/Temp/prj3/boardFile/" + db.getId() + "/" + file);
-                if (!targetFile.exists()) {
-                    targetFile.delete();
-                }
+//                // C:/Temp/prj3/boardFile/2324/tiger.jpg 지우고
+//                File targetFile
+//                        = new File("C:/Temp/prj3/boardFile/" + db.getId() + "/" + file);
+//                if (!targetFile.exists()) {
+//                    targetFile.delete();
+//                }
+                
             }
         }
     }
