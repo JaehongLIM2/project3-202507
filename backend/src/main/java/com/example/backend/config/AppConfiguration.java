@@ -37,10 +37,10 @@ public class AppConfiguration {
     @Value("classpath:secret/private.pem")
     private RSAPrivateKey privateKey;
 
-    @Value("{aws.access.key}")
+    @Value("${aws.access.key}")
     private String accessKey;
 
-    @Value("{aws.secret.key}")
+    @Value("${aws.secret.key}")
     private String secretKey;
 
     @Bean
