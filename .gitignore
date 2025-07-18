@@ -1,3 +1,4 @@
 /.idea/
 /backend/src/main/resources/secret/
 
+/backend/src/main/resources/static/
