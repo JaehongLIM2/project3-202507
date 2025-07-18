@@ -40,7 +40,7 @@ export function AppNavBar() {
         <Container>
           <Navbar.Brand to="/" as={Link}>
             <GiAstronautHelmet className="me-2" />
-            PRJ3
+            프로젝트
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
